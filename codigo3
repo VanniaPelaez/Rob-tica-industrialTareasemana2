@@ -1,0 +1,70 @@
+% Limpia la ventana de comandos
+clc;
+% Limpia todas las variables del espacio de trabajo
+clear;
+% Cierra todas las figuras abiertas
+close all;
+
+% Parámetros de tiempo para la simulación
+tiempo_final = 10;          % Define duración total de la simulación (10 segundos)
+delta_t = 0.1;             % Define intervalo de tiempo entre muestras (0.1 segundos)
+tiempo = 0:delta_t:tiempo_final;  % Crea vector de tiempo desde 0 hasta tiempo_final
+num_muestras = length(tiempo);    % Calcula número total de muestras en la simulación
+
+% Inicialización de vectores de posición
+pos_x = zeros(1, num_muestras+1);  % Crea vector de posiciones x lleno de ceros
+pos_y = zeros(1, num_muestras+1);  % Crea vector de posiciones y lleno de ceros
+pos_x(1) = 8;                      % Establece posición inicial x en 8
+pos_y(1) = 2;                      % Establece posición inicial y en 2
+
+% Definición del punto de destino
+dest_x = 11;     % Coordenada x del punto final
+dest_y = 5;      % Coordenada y del punto final
+
+% Cálculo de velocidades necesarias para llegar al destino
+vel_dx = (dest_x - pos_x(1)) / tiempo_final;    % Calcula velocidad necesaria en x
+vel_dy = (dest_y - pos_y(1)) / tiempo_final;    % Calcula velocidad necesaria en y
+vel_x = vel_dx * ones(1, num_muestras);         % Crea vector de velocidad constante en x
+vel_y = vel_dy * ones(1, num_muestras);         % Crea vector de velocidad constante en y
+
+% Simulación del movimiento
+for i = 1:num_muestras
+    % Actualiza posición x usando ecuación de movimiento (posición actual + velocidad * tiempo)
+    pos_x(i+1) = pos_x(i) + vel_x(i) * delta_t;
+    % Actualiza posición y usando ecuación de movimiento
+    pos_y(i+1) = pos_y(i) + vel_y(i) * delta_t;
+end
+
+% Configuración de la ventana de simulación 3D
+ventana = figure;                          % Crea nueva ventana de figura
+set(ventana, 'Color', 'white');           % Establece fondo blanco
+set(gca, 'FontWeight', 'bold');           % Establece texto en negrita
+tam_pantalla = get(0, 'ScreenSize');      % Obtiene tamaño de la pantalla
+set(ventana, 'position', tam_pantalla);   % Ajusta ventana al tamaño de pantalla
+camlight('headlight');                    % Añade iluminación
+axis equal;                               % Hace que los ejes sean iguales
+grid on;                                  % Activa la cuadrícula
+box on;                                   % Activa el cuadro del gráfico
+xlabel('x(m)'); ylabel('y(m)'); zlabel('z(m)');  % Etiqueta los ejes
+view([35 35]);                            % Establece ángulo de vista
+axis([5 15 0 10 0 2]);                    % Define límites de los ejes
+
+% Configuración inicial del robot
+escala = 4;                               % Define tamaño del robot
+MobileRobot;                              % Carga modelo del robot
+% Dibuja robot en posición inicial
+robot = MobilePlot(pos_x(1), pos_y(1), 0, escala);
+hold on;                                  % Mantiene el gráfico actual
+% Dibuja punto inicial de la trayectoria
+trayectoria = plot3(pos_x(1), pos_y(1), 0, 'LineWidth', 2);
+
+% Animación del movimiento del robot
+for i = 1:num_muestras
+    delete(robot);                        % Borra robot en posición anterior
+    delete(trayectoria);                  % Borra trayectoria anterior
+    % Dibuja robot en nueva posición
+    robot = MobilePlot(pos_x(i), pos_y(i), 0, escala);
+    % Dibuja trayectoria actualizada en rojo
+    trayectoria = plot3(pos_x(1:i), pos_y(1:i), zeros(1, i), 'r', 'LineWidth', 2);
+    pause(delta_t);                       % Pausa para crear animación
+end
