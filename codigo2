@@ -1,0 +1,92 @@
+% Limpia todas las variables del espacio de trabajo
+clear;
+% Cierra todas las figuras abiertas
+close all;
+% Limpia la ventana de comandos
+clc;
+
+% Crea el marco de coordenadas del mundo (matriz identidad SE2)
+E = SE2();
+
+% Definición de puntos en coordenadas del mundo
+P1 = [4,6]';   % Punto 1 - coordenadas [x,y]
+P2 = [12,6];   % Punto 2 - coordenadas [x,y]
+P3 = [6,7];    % Punto 3 - coordenadas [x,y]
+P4 = [10,7];   % Punto 4 - coordenadas [x,y]
+P5 = [12,9];   % Punto 5 - coordenadas [x,y]
+P6 = [12,3]';  % Punto 6 - coordenadas [x,y]
+
+% Crea una nueva figura para la primera visualización
+figure;
+% Dibuja el marco de coordenadas E en color rojo
+trplot2(E, 'frame', 'E', 'color', 'r');
+% Activa la cuadrícula
+grid on;
+% Mantiene la figura actual para añadir más elementos
+hold on;
+
+% Dibuja los puntos y sus etiquetas
+plot_point(P2, '*'); text(P2(1), P2(2), 'P2', 'FontSize', 10, 'Color', 'k'); % Dibuja P2 y su etiqueta
+plot_point(P1, '*'); text(P1(1), P1(2), 'P1', 'FontSize', 10, 'Color', 'k'); % Dibuja P1 y su etiqueta
+plot_point(P3, '*'); text(P3(1), P3(2), 'P3', 'FontSize', 10, 'Color', 'k'); % Dibuja P3 y su etiqueta
+plot_point(P4, '*'); text(P4(1), P4(2), 'P4', 'FontSize', 10, 'Color', 'k'); % Dibuja P4 y su etiqueta
+plot_point(P5, '*'); text(P5(1), P5(2), 'P5', 'FontSize', 10, 'Color', 'k'); % Dibuja P5 y su etiqueta
+plot_point(P6, '*'); text(P6(1), P6(2), 'P6', 'FontSize', 10, 'Color', 'k'); % Dibuja P6 y su etiqueta
+
+% Crea transformación del marco E al marco B (traslación a [8,2] sin rotación)
+ETB = SE2(8,2,0,'deg');
+% Calcula la transformación inversa (de B a E)
+BTE = inv(ETB);
+
+% Transforma todos los puntos al marco de referencia B
+bP2 = BTE * P2  % Punto 2 en coordenadas de B
+bP1 = BTE * P1  % Punto 1 en coordenadas de B
+bP3 = BTE * P3  % Punto 3 en coordenadas de B
+bP4 = BTE * P4  % Punto 4 en coordenadas de B
+bP5 = BTE * P5  % Punto 5 en coordenadas de B
+bP6 = BTE * P6  % Punto 6 en coordenadas de B
+
+% Crea una nueva figura para la segunda visualización
+figure;
+% Dibuja el marco E en color verde
+trplot2(E, 'frame', 'E', 'color', 'g');
+grid on;
+hold on;
+% Dibuja el marco B en color verde
+trplot2(ETB, 'frame', 'B', 'color', 'g');
+
+% Dibuja los puntos en la segunda figura
+plot_point(P2, '*'); text(P2(1), P2(2), 'P2', 'FontSize', 10, 'Color', 'k');
+plot_point(P1, '*'); text(P1(1), P1(2), 'P1', 'FontSize', 10, 'Color', 'k');
+plot_point(P3, '*'); text(P3(1), P3(2), 'P3', 'FontSize', 10, 'Color', 'k');
+plot_point(P4, '*'); text(P4(1), P4(2), 'P4', 'FontSize', 10, 'Color', 'k');
+plot_point(P5, '*'); text(P5(1), P5(2), 'P5', 'FontSize', 10, 'Color', 'k');
+plot_point(P6, '*'); text(P6(1), P6(2), 'P6', 'FontSize', 10, 'Color', 'k');
+
+% Nueva transformación del marco B (traslación a [11,5] con rotación de 45°)
+ETB = SE2(11,5,45,'deg');
+
+% Transforma los puntos de vuelta al marco E usando la nueva transformación
+eP2 = ETB * bP2  % Punto 2 en nuevas coordenadas de E
+eP1 = ETB * bP1  % Punto 1 en nuevas coordenadas de E
+eP3 = ETB * bP3  % Punto 3 en nuevas coordenadas de E
+eP4 = ETB * bP4  % Punto 4 en nuevas coordenadas de E
+eP5 = ETB * bP5  % Punto 5 en nuevas coordenadas de E
+eP6 = ETB * bP6  % Punto 6 en nuevas coordenadas de E
+
+% Crea una nueva figura para la visualización final
+figure;
+% Dibuja el marco E en color azul
+trplot2(E, 'frame', 'E', 'color', 'b');
+grid on;
+hold on;
+% Dibuja el marco B final en color azul
+trplot2(ETB, 'frame', 'B', 'color', 'b');
+
+% Dibuja los puntos en la configuración final
+plot_point(P2, '*'); text(P2(1), P2(2), 'P2', 'FontSize', 10, 'Color', 'k');
+plot_point(P1, '*'); text(P1(1), P1(2), 'P1', 'FontSize', 10, 'Color', 'k');
+plot_point(P3, '*'); text(P3(1), P3(2), 'P3', 'FontSize', 10, 'Color', 'k');
+plot_point(P4, '*'); text(P4(1), P4(2), 'P4', 'FontSize', 10, 'Color', 'k');
+plot_point(P5, '*'); text(P5(1), P5(2), 'P5', 'FontSize', 10, 'Color', 'k');
+plot_point(P6, '*'); text(P6(1), P6(2), 'P6', 'FontSize', 10, 'Color', 'k');
