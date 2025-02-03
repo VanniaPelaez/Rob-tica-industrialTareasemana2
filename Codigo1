@@ -1,0 +1,48 @@
+%Eje mundo E 
+close all
+E=SE2(0,0,0,'deg')
+B=SE2(8,2,0,'deg')
+%Puntos
+P1=[4,6]'
+P2=[12,6]'
+PT1=[6,7]'
+PT2=[10,7]'
+PT3=[12,9]'
+PT4=[12,3]'
+figure('Name','Ejercicio 1.1','NumberTitle','off');
+trplot2(E,'frame','E','arrow')
+hold on
+trplot2(B,'frame','B','arrow')
+plot_point(P1,'*')
+plot_point(P2,'*')
+plot_point(PT1,'*')
+plot_point(PT2,'*')
+plot_point(PT3,'*')
+plot_point(PT4,'*')
+axis([-1 13 -1 10])
+grid on
+%%inciso 2
+%puntos con respecto a eje B
+BP1=[-4,4]'
+BP2=[4,4]'
+BPT1=[-2,5]'
+BPT2=[2,5]'
+BPT3=[4,7]'
+BPT4=[4,1]'
+%PUNTOS HOMOGENEOS
+BP1H=[-4,4,1]'
+BP2H=[4,4,1]'
+BPT1H=[-2,5,1]'
+BPT2H=[2,5,1]'
+BPT3H=[4,7,1]'
+BPT4H=[4,1,1]'
+%nueva posicion del eje de referencia B
+ETB=SE2(11,5,45,'deg')
+ETB=ETB.T
+%nueva posicion de los puntos
+EP1H=ETB*BP1H
+EP2H=ETB*BP2H
+EPT1H=ETB*BPT1H
+EPT2H=ETB*BPT2H
+EPT3H=ETB*BPT3H
+EPT4H=ETB*BPT4H
