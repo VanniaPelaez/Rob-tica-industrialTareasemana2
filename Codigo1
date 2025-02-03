@@ -1,48 +1,58 @@
 %Eje mundo E 
-close all
-E=SE2(0,0,0,'deg')
-B=SE2(8,2,0,'deg')
-%Puntos
-P1=[4,6]'
-P2=[12,6]'
-PT1=[6,7]'
-PT2=[10,7]'
-PT3=[12,9]'
-PT4=[12,3]'
-figure('Name','Ejercicio 1.1','NumberTitle','off');
-trplot2(E,'frame','E','arrow')
-hold on
-trplot2(B,'frame','B','arrow')
-plot_point(P1,'*')
-plot_point(P2,'*')
-plot_point(PT1,'*')
-plot_point(PT2,'*')
-plot_point(PT3,'*')
-plot_point(PT4,'*')
-axis([-1 13 -1 10])
-grid on
+close all                    % Cierra todas las figuras abiertas
+E=SE2(0,0,0,'deg')          % Crea marco de referencia E en origen (0,0) sin rotación
+B=SE2(8,2,0,'deg')          % Crea marco de referencia B en posición (8,2) sin rotación
+
+%Puntos en marco de referencia E
+P1=[4,6]'                   % Define punto P1 en coordenadas [x=4,y=6]
+P2=[12,6]'                  % Define punto P2 en coordenadas [x=12,y=6]
+PT1=[6,7]'                  % Define punto PT1 en coordenadas [x=6,y=7]
+PT2=[10,7]'                 % Define punto PT2 en coordenadas [x=10,y=7]
+PT3=[12,9]'                 % Define punto PT3 en coordenadas [x=12,y=9]
+PT4=[12,3]'                 % Define punto PT4 en coordenadas [x=12,y=3]
+
+% Configuración de la figura
+figure('Name','Ejercicio 1.1','NumberTitle','off');  % Crea nueva figura con título personalizado
+trplot2(E,'frame','E','arrow')     % Dibuja marco E con flechas
+hold on                            % Mantiene la figura actual para añadir elementos
+trplot2(B,'frame','B','arrow')     % Dibuja marco B con flechas
+
+% Dibuja todos los puntos con asteriscos
+plot_point(P1,'*')                 % Dibuja P1
+plot_point(P2,'*')                 % Dibuja P2
+plot_point(PT1,'*')                % Dibuja PT1
+plot_point(PT2,'*')                % Dibuja PT2
+plot_point(PT3,'*')                % Dibuja PT3
+plot_point(PT4,'*')                % Dibuja PT4
+
+axis([-1 13 -1 10])                % Define límites de los ejes x:[-1,13], y:[-1,10]
+grid on                            % Activa la cuadrícula
+
 %%inciso 2
-%puntos con respecto a eje B
-BP1=[-4,4]'
-BP2=[4,4]'
-BPT1=[-2,5]'
-BPT2=[2,5]'
-BPT3=[4,7]'
-BPT4=[4,1]'
-%PUNTOS HOMOGENEOS
-BP1H=[-4,4,1]'
-BP2H=[4,4,1]'
-BPT1H=[-2,5,1]'
-BPT2H=[2,5,1]'
-BPT3H=[4,7,1]'
-BPT4H=[4,1,1]'
+%puntos con respecto a eje B (coordenadas locales en B)
+BP1=[-4,4]'                        % P1 en coordenadas de B
+BP2=[4,4]'                         % P2 en coordenadas de B
+BPT1=[-2,5]'                       % PT1 en coordenadas de B
+BPT2=[2,5]'                        % PT2 en coordenadas de B
+BPT3=[4,7]'                        % PT3 en coordenadas de B
+BPT4=[4,1]'                        % PT4 en coordenadas de B
+
+%PUNTOS HOMOGENEOS (añade coordenada 1 para transformaciones)
+BP1H=[-4,4,1]'                     % P1 en coordenadas homogéneas
+BP2H=[4,4,1]'                      % P2 en coordenadas homogéneas
+BPT1H=[-2,5,1]'                    % PT1 en coordenadas homogéneas
+BPT2H=[2,5,1]'                     % PT2 en coordenadas homogéneas
+BPT3H=[4,7,1]'                     % PT3 en coordenadas homogéneas
+BPT4H=[4,1,1]'                     % PT4 en coordenadas homogéneas
+
 %nueva posicion del eje de referencia B
-ETB=SE2(11,5,45,'deg')
-ETB=ETB.T
-%nueva posicion de los puntos
-EP1H=ETB*BP1H
-EP2H=ETB*BP2H
-EPT1H=ETB*BPT1H
-EPT2H=ETB*BPT2H
-EPT3H=ETB*BPT3H
-EPT4H=ETB*BPT4H
+ETB=SE2(11,5,45,'deg')             % Nueva transformación: B se mueve a (11,5) con rotación 45°
+ETB=ETB.T                          % Obtiene la matriz de transformación homogénea
+
+%nueva posicion de los puntos (transformación de coordenadas B a E)
+EP1H=ETB*BP1H                      % Transforma P1 al marco E
+EP2H=ETB*BP2H                      % Transforma P2 al marco E
+EPT1H=ETB*BPT1H                    % Transforma PT1 al marco E
+EPT2H=ETB*BPT2H                    % Transforma PT2 al marco E
+EPT3H=ETB*BPT3H                    % Transforma PT3 al marco E
+EPT4H=ETB*BPT4H                    % Transforma PT4 al marco E
